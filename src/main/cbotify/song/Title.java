@@ -1,9 +1,9 @@
 package cbotify.song;
 
-class Title extends Attribute {
+public class Title extends Attribute {
     private final String title;
     
-    Title(String title) {
+    public Title(String title) {
         this.title = title;
     }
     

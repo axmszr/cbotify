@@ -1,6 +1,6 @@
 package cbotify.song;
 
-class Comment extends Attribute {
+public class Comment extends Attribute {
     private final String comment;
     
     Comment(String comment) {

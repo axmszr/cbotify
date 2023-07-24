@@ -3,7 +3,7 @@ package cbotify.song;
 import java.util.ArrayList;
 import java.util.List;
 
-class Song {
+public class Song {
     private final Title title;
     private final Album album;
     private final List<Artist> artists;
@@ -14,7 +14,7 @@ class Song {
     private boolean isFlagged;
     
     
-    Song(Title title, Album album, List<Artist> artists) {
+    public Song(Title title, Album album, List<Artist> artists) {
         this.title = title;
         this.album = album;
         this.artists = artists;
