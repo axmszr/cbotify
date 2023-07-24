@@ -1,5 +1,7 @@
 package cbotify.struct;
 
+import java.util.HashSet;
+
 import cbotify.song.Artist;
 
 class ArtistList {

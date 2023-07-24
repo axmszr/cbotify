@@ -1,5 +1,8 @@
 package cbotify.song;
 
+import java.util.ArrayList;
+import java.util.List;
+
 class Song {
     private final Title title;
     private final Album album;
@@ -31,7 +34,7 @@ class Song {
         boolean matchFound = false;
         
         for (Tier t : Tier.values()) {
-            if t.matches(rating) {
+            if (t.matches(rating)) {
                 this.tier = t;
                 matchFound = true;
                 break;

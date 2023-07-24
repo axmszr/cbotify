@@ -1,6 +1,10 @@
 package cbotify.struct;
 
+import java.util.HashMap;
+import java.util.List;
+
 import cbotify.song.Album;
+import cbotify.song.Artist;
 
 class AlbumList {
     private HashMap<Album, Album> albums;
@@ -16,7 +20,7 @@ class AlbumList {
     public Album makeAlbum(String albumTitle, List<Artist> artists) {
         Album album = new Album(albumTitle, artists);
         if (!hasAlbum(album)) {
-            albums.set(album, album);
+            albums.put(album, album);
         }
         
         return albums.get(album);
@@ -24,10 +28,10 @@ class AlbumList {
     
     public void mergeAlbums(Album root, Album branch) {
         if (!hasAlbum(root)) {
-            albums.set(root, root);
+            albums.put(root, root);
         }
         
-        albums.set(branch, root);
+        albums.put(branch, root);
     }
     
     @Override

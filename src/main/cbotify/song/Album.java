@@ -1,10 +1,14 @@
 package cbotify.song;
 
-class Album extends Attribute {
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+public class Album extends Attribute {
     private final String title;
     private final List<Artist> artists;     // doesn't include features
     
-    Album(String title, List<Artist> artists) {
+    public Album(String title, List<Artist> artists) {
         this.title = title;
         this.artists = artists;
     }

@@ -1,9 +1,11 @@
 package cbotify.song;
 
-class Artist extends Attribute {
+import java.util.Objects;
+
+public class Artist extends Attribute {
     private final String name;
     
-    Artist(String name) {
+    public Artist(String name) {
         this.name = name;
     }
     
