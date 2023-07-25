@@ -1,30 +1,33 @@
 package cbotify.struct;
 
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import cbotify.song.Album;
 import cbotify.song.Artist;
 import cbotify.song.Song;
-import cbotify.song.Title;
 
 class SongList {
-    private static HashSet<Song> emptySet = new HashSet<>();
+    private static HashMap<Song, Song> emptyMap = new HashMap<>();
 
-    private HashSet<Song> songs;
+    private HashMap<Song, Song> songs;
 
-    SongList(Set<Song> songs) {
-        this.songs = new HashSet<>(songs);
+    SongList(Map<Song, Song> songs) {
+        this.songs = new HashMap<>(songs);
     }
 
     public static SongList makeNew() {
-        return new SongList(emptySet);
+        return new SongList(emptyMap);
     }
 
-    public static SongList makeWith(List<Song> songList) {
-        HashSet<Song> songSet = new HashSet<>(songList);
-        return new SongList(songSet);
+    public static SongList makeNewWith(List<Song> songList) {
+        Map<Song, Song> songMap = songList.stream()
+                .collect(Collectors.toMap(Function.identity(), Function.identity()));
+
+        return new SongList(songMap);
     }
 
     public static SongList makeCopy(SongList songList) {
@@ -32,18 +35,16 @@ class SongList {
     }
 
     public boolean hasSong(Song song) {
-        return this.songs.contains(song);
+        return this.songs.containsKey(song);
     }
     
     public Song makeSong(String songTitle, Album album, List<Artist> artists) {
-        // maybe do String processing here?
-        Title title = new Title(songTitle);
-        Song song = new Song(title, album, artists);
+        Song song = new Song(songTitle, album, artists);
         if (!hasSong(song)) {
-            this.songs.add(song);
+            this.songs.put(song, song);
         }
         
-        return song;
+        return this.songs.get(song);
     }
     
     @Override

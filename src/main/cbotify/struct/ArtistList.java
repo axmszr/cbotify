@@ -1,27 +1,31 @@
 package cbotify.struct;
 
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import cbotify.song.Artist;
 
 class ArtistList {
-    private static HashSet<Artist> emptySet = new HashSet<>();
+    private static HashMap<Artist, List<Artist>> emptyMap = new HashMap<>();
 
-    private HashSet<Artist> artists;
+    private HashMap<Artist, List<Artist>> artists;
 
-    ArtistList(Set<Artist> artists) {
-        this.artists = new HashSet<>(artists);
+    ArtistList(Map<Artist, List<Artist>> artists) {
+        this.artists = new HashMap<>(artists);
     }
 
     public static ArtistList makeNew() {
-        return new ArtistList(emptySet);
+        return new ArtistList(emptyMap);
     }
 
-    public static ArtistList makeWith(List<Artist> artistList) {
-        HashSet<Artist> artistSet = new HashSet<>(artistList);
-        return new ArtistList(artistSet);
+    public static ArtistList makeNewWith(List<Artist> artistList) {
+        Map<Artist, List<Artist>> artistMap = artistList.stream()
+                .collect(Collectors.toMap(Function.identity(), List::of));
+
+        return new ArtistList(artistMap);
     }
 
     public static ArtistList makeCopy(ArtistList artistList) {
@@ -29,18 +33,32 @@ class ArtistList {
     }
     
     public boolean hasArtist(Artist artist) {
-        return this.artists.contains(artist);
+        return this.artists.containsKey(artist);
     }
     
     public Artist makeArtist(String name) {
         Artist artist = new Artist(name);
         if (!hasArtist(artist)) {
-            this.artists.add(artist);
+            this.artists.put(artist, List.of(artist));
         }
-        
-        return artist;
+
+        // it is ensured that the first index is the Artist
+        return this.artists.get(artist).get(0);
     }
-    
+
+    public void makeAssoc(Artist first, Artist second) {
+        if (!hasArtist(first)) {
+            this.artists.put(first, List.of(first));
+        }
+
+        if (!hasArtist(second)) {
+            this.artists.put(second, List.of(second));
+        }
+
+        this.artists.get(first).add(second);
+        this.artists.get(second).add(first);
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

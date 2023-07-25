@@ -22,7 +22,7 @@ class AlbumList {
         return new AlbumList(emptyMap);
     }
 
-    public static AlbumList makeWith(List<Album> albumList) {
+    public static AlbumList makeNewWith(List<Album> albumList) {
         Map<Album, Album> albumMap = albumList.stream()
                 .collect(Collectors.toMap(Function.identity(), Function.identity()));
 
@@ -40,18 +40,19 @@ class AlbumList {
     public Album makeAlbum(String albumTitle, List<Artist> artists) {
         Album album = new Album(albumTitle, artists);
         if (!hasAlbum(album)) {
-            albums.put(album, album);
+            this.albums.put(album, album);
         }
         
-        return albums.get(album);
+        return this.albums.get(album);
     }
     
     public void mergeAlbums(Album root, Album branch) {
+        // root = original; branch = redirect
         if (!hasAlbum(root)) {
-            albums.put(root, root);
+            this.albums.put(root, root);
         }
         
-        albums.put(branch, root);
+        this.albums.put(branch, root);
     }
     
     @Override
