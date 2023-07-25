@@ -1,6 +1,6 @@
 package cbotify.song;
 
-public class Tag extends Attribute {
+class Tag extends Attribute {
     private final String tag;
     
     Tag(String tag) {

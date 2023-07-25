@@ -1,6 +1,6 @@
 package cbotify.song;
 
-public enum Tier {
+enum Tier {
     BLANK("-", 0),
     C("C", 4),
     B("B", 5),

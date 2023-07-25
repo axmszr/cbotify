@@ -14,8 +14,8 @@ public class Song {
     private boolean isFlagged;
     
     
-    public Song(Title title, Album album, List<Artist> artists) {
-        this.title = title;
+    public Song(String songTitle, Album album, List<Artist> artists) {
+        this.title = new Title(songTitle);
         this.album = album;
         this.artists = artists;
         this.tier = Tier.BLANK;

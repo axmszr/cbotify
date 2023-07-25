@@ -1,6 +1,6 @@
 package cbotify.song;
 
-public class Title extends Attribute {
+class Title extends Attribute {
     private final String title;
     
     public Title(String title) {
