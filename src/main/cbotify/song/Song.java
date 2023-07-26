@@ -2,8 +2,12 @@ package cbotify.song;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Song {
+    private static final Album dummyAlbum = Album.makeDummy();
+
     private final Title title;
     private final Album album;
     private final List<Artist> artists;
@@ -13,24 +17,42 @@ public class Song {
     private List<Tag> tags;
     private boolean isFlagged;
     
-    
     public Song(String songTitle, Album album, List<Artist> artists) {
         this.title = new Title(songTitle);
         this.album = album;
         this.artists = artists;
+        // how to ensure non-empty?
         this.tier = Tier.BLANK;
         this.comments = new ArrayList<>();
         this.tags = new ArrayList<>();
         this.isFlagged = false;
     }
-    
-    boolean isSameAs(Song other) {
-        // note that the same song can be in different albums
-        return this.title.equals(other.title)
-                && this.artists.equals(other.artists);
+
+    public static Song makeDummy(String songTitle, List<Artist> artists) {
+        return new Song(songTitle, dummyAlbum, artists);
+    }
+
+    String printArtists() {
+        int numArtists = artists.size();
+
+        if (numArtists == 1) {
+            return artists.get(0).getValue();
+        } else if (numArtists == 2) {
+            return String.format("%s & %s",
+                    artists.get(0), artists.get(1));
+        } else if (numArtists > 2) {
+            String exceptLast = artists.subList(0, numArtists - 1).stream()
+                    .map(Artist::getValue)
+                    .collect(Collectors.joining(", "));
+            return String.format("%s & %s",
+                    exceptLast, artists.get(numArtists - 1));
+        } else {
+            return "";
+            // throw exception
+        }
     }
     
-    void rate(String rating) {
+    public String rate(String rating) {
         boolean matchFound = false;
         
         for (Tier t : Tier.values()) {
@@ -43,36 +65,60 @@ public class Song {
         
         if (!matchFound) {
             this.tier = this.tier;
-            // throw new 
+            // throw new exception?
         }
+
+        return String.format("Rated '%s': %s",
+                this.tier, this);
     }
     
-    void flag() {
-        this.isFlagged = true;
-    }
-    
-    void unflag() {
-        this.isFlagged = false;
-    }
-    
-    void addComment(Comment comment) {
+    public void addComment(String commentString) {
+        Comment comment = new Comment(commentString);
         this.comments.add(comment);
     }
     
-    void setComment(int index, Comment comment) {
+    public void setComment(int index, String commentString) {
+        Comment comment = new Comment(commentString);
         this.comments.set(index, comment);
     }
     
-    void delComment(int index) {
-        this.comments.remove(index);
+    public String delComment(int index) {
+        return this.comments.remove(index).getValue();
+    }
+
+    public String printComments() {
+        // ooh maybe index them?
+        return this.comments.stream()
+                .map(Comment::toString)
+                .collect(Collectors.joining("\n"));
     }
     
-    void addTag(Tag tag) {
+    public void addTag(String tagString) {
+        Tag tag = new Tag(tagString);
         this.tags.add(tag);
     }
     
-    void delTag(int index) {
-        this.tags.remove(index);
+    public String delTag(int index) {
+        return this.tags.remove(index).toString();
+    }
+
+    public String printTags() {
+        return this.tags.stream()
+                .map(Tag::toString)
+                .collect(Collectors.joining(" | "));
+    }
+
+    public void flag() {
+        this.isFlagged = true;
+    }
+
+    public void unflag() {
+        this.isFlagged = false;
+    }
+
+    public String print() {
+        return String.format("%s", this);
+        // TODO
     }
     
     @Override
@@ -86,12 +132,28 @@ public class Song {
         }
         
         Song other = (Song) obj;
+        // note that the same song can be in different albums
         return this.title.equals(other.title)
-                && this.album.equals(other.album)
-                && this.artists.equals(other.artists)
-                && this.tier.equals(other.tier)
-                && this.comments.equals(other.comments)
-                && this.tags.equals(other.tags)
-                && this.isFlagged == other.isFlagged;
+                //&& this.album.equals(other.album)
+                && this.artists.equals(other.artists);
+                //&& this.tier.equals(other.tier)
+                //&& this.comments.equals(other.comments)
+                //&& this.tags.equals(other.tags)
+                //&& this.isFlagged == other.isFlagged;
+    }
+
+    @Override
+    public int hashCode() {
+        String artistsConcat = this.artists.stream().sorted()
+                .map(Artist::getValue)
+                .collect(Collectors.joining());
+
+        return Objects.hash(this.title, artistsConcat);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s - %s",
+                this.title, printArtists());
     }
 }

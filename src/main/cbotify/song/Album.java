@@ -5,12 +5,20 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Album extends Attribute {
+    private static final String dummyTitle = "DUMMY";
+    private static final List<Artist> dummyArtists = List.of(Artist.makeDummy());
+
     private final String title;
     private final List<Artist> artists;     // doesn't include features
     
     public Album(String title, List<Artist> artists) {
         this.title = title;
         this.artists = artists;
+        // how to ensure non-empty?
+    }
+
+    public static Album makeDummy() {
+        return new Album(dummyTitle, dummyArtists);
     }
     
     @Override
@@ -37,7 +45,7 @@ public class Album extends Attribute {
         if (!(obj instanceof Album)) {
             return false;
         }
-        
+
         Album other = (Album) obj;
         return getValue().equals(other.getValue())
                 && this.artists.equals(other.artists);
@@ -46,7 +54,7 @@ public class Album extends Attribute {
     @Override
     public int hashCode() {
         String artistsConcat = this.artists.stream().sorted()
-                .map(a -> a.getValue())
+                .map(Artist::getValue)
                 .collect(Collectors.joining());
                 
         return Objects.hash(this.title, artistsConcat);
