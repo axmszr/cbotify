@@ -25,4 +25,9 @@ class Comment extends Attribute {
         Comment other = (Comment) obj;
         return getValue().equals(other.getValue());
     }
+
+    @Override
+    public String toString() {
+        return " ~ " + getValue();
+    }
 }

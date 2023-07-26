@@ -25,4 +25,9 @@ class Tag extends Attribute {
         Tag other = (Tag) obj;
         return getValue().equals(other.getValue());
     }
+
+    @Override
+    public String toString() {
+        return String.format("[%s]", getValue());
+    }
 }

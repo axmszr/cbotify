@@ -11,4 +11,9 @@ abstract class Attribute implements Comparable<Attribute> {
     public int compareTo(Attribute other) {
         return getValue().toLowerCase().compareTo(other.getValue().toLowerCase());
     }
+
+    @Override
+    public String toString() {
+        return getValue();
+    }
 }
