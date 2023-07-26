@@ -46,7 +46,68 @@ class SongList {
         
         return this.songs.get(song);
     }
-    
+
+    Song retrieve(String songTitle, List<Artist> artists) {
+        Song dummySong = Song.makeDummy(songTitle, artists);
+        if (!hasSong(dummySong)) {
+            return null;
+            // throw exception?
+        }
+
+        return this.songs.get(dummySong);
+    }
+
+    public String rateSong(String songTitle, List<Artist> artists, String rating) {
+        Song song = retrieve(songTitle, artists);
+        // catch
+        return song.rate(rating);
+    }
+
+    public String addComment(String songTitle, List<Artist> artists, String comment) {
+        Song song = retrieve(songTitle, artists);
+        // catch
+        song.addComment(comment);
+        return "Comment added to: " + song.toString();
+    }
+
+    public String setComment(String songTitle, List<Artist> artists, int index, String comment) {
+        Song song = retrieve(songTitle, artists);
+        // catch
+        song.setComment(index, comment);
+        return "Comment changed.";
+    }
+
+    public String delComment(String songTitle, List<Artist> artists, int index) {
+        Song song = retrieve(songTitle, artists);
+        // catch
+        return "Comment removed:\n" + song.delComment(index);
+    }
+
+    public String addTag(String songTitle, List<Artist> artists, String tag) {
+        Song song = retrieve(songTitle, artists);
+        // catch
+        song.addTag(tag);
+        return "Tagged: " + song.toString();
+    }
+
+    public String delTag(String songTitle, List<Artist> artists, int index) {
+        Song song = retrieve(songTitle, artists);
+        // catch
+        return "Tag removed: " + song.delTag(index);
+    }
+
+    public void flagSong(String songTitle, List<Artist> artists) {
+        Song song = retrieve(songTitle, artists);
+        // catch
+        song.flag();
+    }
+
+    public void unflagSong(String songTitle, List<Artist> artists) {
+        Song song = retrieve(songTitle, artists);
+        // catch
+        song.unflag();
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
