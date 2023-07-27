@@ -7,27 +7,27 @@ import cbotify.song.Album;
 import cbotify.song.Artist;
 import cbotify.song.Song;
 
-public class Storage {
+public class Structure {
     private final ArtistList artistList;
     private final AlbumList albumList;
     private final SongList songList;
 
-    Storage(AlbumList albumList, ArtistList artistList, SongList songList) {
+    Structure(AlbumList albumList, ArtistList artistList, SongList songList) {
         this.artistList = artistList;
         this.albumList = albumList;
         this.songList = songList;
     }
 
-    public Storage makeNew() {
+    public Structure makeNew() {
         AlbumList emptyAlbumList = AlbumList.makeNew();
         ArtistList emptyArtistList = ArtistList.makeNew();
         SongList emptySongList = SongList.makeNew();
 
-        return new Storage(emptyAlbumList, emptyArtistList, emptySongList);
+        return new Structure(emptyAlbumList, emptyArtistList, emptySongList);
     }
 
-    public Storage load(AlbumList newAlbumList, ArtistList newArtistList, SongList newSongList) {
-        return new Storage(newAlbumList, newArtistList, newSongList);
+    public Structure load(AlbumList newAlbumList, ArtistList newArtistList, SongList newSongList) {
+        return new Structure(newAlbumList, newArtistList, newSongList);
     }
 
     public Artist addArtist(String name) {
